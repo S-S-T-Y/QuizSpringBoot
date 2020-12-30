@@ -1,0 +1,45 @@
+#totalquizNumView {
+	margin-left:150pt;
+	color:#808080;
+	font-size: 16px;
+}
+#nowquizNumView {
+	color:#808080;
+	font-size: 16px;
+}
+#nextButton {
+	margin-top: 30pt;
+	margin-bottom: 30pt;
+	margin-left: 60pt;
+}
+
+.judge {
+  opacity: 0;
+}
+.judge.show {
+  opacity: 1;
+}
+
+#seikai {
+  opacity: 0;
+  transition: 1.0s;
+}
+#seikai.show {
+  opacity: 1;
+  color:#FF0000;
+}
+
+#huseikai {
+  opacity: 0;
+  transition: 1.0s;
+}
+#huseikai.show {
+  opacity: 1;
+  color:#FF0000;
+}
+.figurecaption {
+  margin-left:130px;
+  color:#FF0000;
+  font-size:24px;
+  font-weight:bolder;
+}

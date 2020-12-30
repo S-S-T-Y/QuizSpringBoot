@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+    <mapper namespace="com.example.demo.repository.QuestionMapper">
+    <!-- マッピング定義 -->
+    <resultMap type="com.example.demo.entity.Question" id="question">
+        <id column="id" property="id" />
+        <result column="question" property="question" />
+        <result column="choice1" property="choice1" />
+        <result column="choice2" property="choice2" />
+        <result column="choice3" property="choice3" />
+        <result column="choice4" property="choice4" />
+        <result column="answer" property="answer" />
+        <result column="description" property="description" />
+        <result column="answered" property="answered" />
+        <result column="misstake" property="misstake" />
+    </resultMap>
+
+    <!-- １件検索 -->
+    <select id="selectOne" parameterType="int" resultType="com.example.demo.entity.Question">
+        SELECT
+            id,
+            question,
+            choice1,
+            choice2,
+            choice3,
+            choice4,
+            answer,
+            description,
+            answered,
+            misstake
+        FROM
+            my_quiz
+        WHERE
+            id = #{id}
+    </select>
+
+    <!-- 全件検索 -->
+    <select id="selectMany" resultMap="question">
+        SELECT
+            id,
+            title,
+            detail,
+            choice1,
+            choice2,
+            choice3,
+            choice4,
+            answer,
+            description,
+            answered,
+            misstake
+        FROM
+            question
+    </select>
+
+    <!-- 問題数を取得 -->
+    <select id="countQuiz" resultType="Integer">
+        SELECT COUNT(*)
+        FROM
+            question
+    </select>
+
+    <!-- 出題テーブルを一括消去 -->
+    <delete id="deleteQuiz" parameterType="int">
+         DELETE FROM my_quiz
+    </delete>
+
+    <!-- 出題テーブルに登録 -->
+    <insert id="insertQuiz" parameterType="list">
+         INSERT INTO my_quiz
+         SELECT
+            id,
+            question,
+            choice1,
+            choice2,
+            choice3,
+            choice4,
+            answer,
+            description,
+            answered,
+            misstake
+        FROM
+            question
+        WHERE
+            id in
+            <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+    </insert>
+
+    <!-- 出題数を取得 -->
+    <select id="countMyquiz" resultType="Integer">
+        SELECT COUNT(*)
+        FROM
+            my_quiz
+    </select>
+
+    <!-- 未回答の出題IDを取得 -->
+    <select id="idQuiz" resultType="Integer">
+        SELECT
+            id
+        FROM
+            my_quiz
+        WHERE
+            answered = false
+    </select>
+
+    <!-- 正解有無を設定 -->
+    <update id="reviewQuiz">
+        UPDATE
+            my_quiz
+        SET
+            misstake = false
+        WHERE
+            id = #{id}
+    </update>
+
+    <!-- 解答済を設定 -->
+    <update id="answerdQuiz">
+        UPDATE
+            my_quiz
+        SET
+            answered = true
+        WHERE
+            id = #{id}
+    </update>
+
+    <!-- 正解数を取得 -->
+    <select id="countReview" resultType="Integer">
+        SELECT COUNT(*)
+        FROM
+            my_quiz
+        WHERE
+            misstake = false
+    </select>
+    </mapper>
